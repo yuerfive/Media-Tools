@@ -36,7 +36,7 @@ Media Tools
     https://www.gyan.dev/ffmpeg/builds/ffmpeg-release-full.7z
 ```
 
-- videoconvert.py 检查 ffmpeg 代码
+- videotools.py 中检查 ffmpeg 代码
 
 ```python
     # 检查是否存在 ffmpeg 程序

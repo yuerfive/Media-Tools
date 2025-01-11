@@ -7,7 +7,7 @@ from PySide6.QtCore import QObject, Signal
 from multiprocessing import Pool, cpu_count, Pipe
 from threading import Thread
 
-import videoconvert
+import videotools
 from main_win import Main_Win
 from trayaction import TrayAction
 
@@ -72,7 +72,7 @@ class Slot(QObject):
         self.filenames = [os.path.basename(i) for i in value['选择文件路径']]
 
         # 检查输入参数
-        if not value['选择文件路径'] or not value['输出文件路径'] or not value['转换大小'] or not value['使用算法'] or not value['转换质量'] or not value['编码预设'] or not value['编码器']:
+        if not value['选择文件路径'] or not value['输出文件路径'] or not value['转换大小'] or not value['使用算法'] or not value['转换质量'] or not value['编码预设']:
             return
         if value['锐化'] is not False and value['锐化'] is not True:
             return
@@ -103,13 +103,12 @@ class Slot(QObject):
                 value['锐化'],
                 value['转换质量'],
                 value['编码预设'],
-                value['编码器'],
                 Child_pige
             ))
 
         # 多进程处理
         with Pool(cpu_count()) as pool:
-            pool.map_async(videoconvert.process_task, task_list)
+            pool.map_async(videotools.process_task, task_list)
 
             # 主进程接收消息
             completed = 0

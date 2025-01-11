@@ -11,3 +11,4 @@ Setup.py
 dist/
 _internal/
 分发/
+config/init_config_copy.json

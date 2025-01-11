@@ -5,8 +5,8 @@ import subprocess
 import threading
 
 
-class VideoConvert:
-    def __init__(self, input_folder, output_folder, target_width, target_height, algorithm, sharpen, crf, preset, codec, Child_pige):
+class VideoTools:
+    def __init__(self, input_folder, output_folder, target_width, target_height, algorithm, sharpen, crf, preset, Child_pige):
         self.input_folder = input_folder
         self.output_folder = output_folder
         self.target_width = target_width
@@ -15,7 +15,6 @@ class VideoConvert:
         self.sharpen = sharpen
         self.crf = crf
         self.preset = preset
-        self.codec = codec
 
         self.info = ''
         self.filename = os.path.basename(self.input_folder)
@@ -38,23 +37,71 @@ class VideoConvert:
         else:
             self.ffmpeg = 'ffmpeg'
 
-    # 组合命令行参数
+        # 检测硬件类型
+        self.hardware_type = self.detect_gpu()
+
+    # 检测硬件类型
+    def detect_gpu(self):
+        """
+        检测系统中的 GPU 类型。
+        优先级：NVIDIA > AMD > Intel > 无硬件加速
+        """
+        try:
+            # 检查 NVIDIA GPU 是否可用
+            result = subprocess.run([self.ffmpeg, "-hwaccels"], stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True)
+            output = result.stdout.lower()
+
+            if "cuda" in output or "nvenc" in output:
+                return "nvidia"
+            elif "amf" in output:
+                return "amd"
+            elif "qsv" in output:
+                return "intel"
+        except Exception as e:
+            print(f"检测 GPU 时发生错误: {e}")
+
+        return "cpu"
+
     def get_command(self):
+        """
+        根据检测到的硬件类型生成对应的 FFmpeg 命令。
+        """
         scale_filter = f"scale={self.target_width}:{self.target_height}:flags={self.algorithm}"
         if self.sharpen:
             filters = f"{scale_filter},unsharp=5:5:1.0:3:3:0.5"
         else:
             filters = scale_filter
 
+        # 根据硬件类型选择参数
+        if self.hardware_type == "nvidia":
+            video_codec = "h264_nvenc"
+            accel = "-hwaccel cuda"
+        elif self.hardware_type == "amd":
+            video_codec = "h264_amf"
+            accel = ""
+        elif self.hardware_type == "intel":
+            video_codec = "h264_qsv"
+            accel = ""
+        else:  # 使用 CPU
+            video_codec = "libx264"
+            accel = ""
+
+        # 生成命令
         command = [
-            self.ffmpeg, "-i", self.input_folder,
-            "-vf", filters,
-            "-c:v", self.codec,
-            "-crf", str(self.crf),
-            "-preset", self.preset,
-            "-c:a", "copy",
-            self.output_folder
+            self.ffmpeg,
         ]
+        if accel:  # 如果需要硬件加速参数
+            command.extend(accel.split())
+        command.extend([
+            "-i", self.input_folder,
+            "-vf", filters,       # 视频滤镜
+            "-c:v", video_codec,  # 视频编码器
+            "-crf", str(self.crf),  # 视频质量
+            "-preset", self.preset,  # 编码速度预设
+            "-map", "0",          # 保留所有流（视频、音频、字幕）
+            "-c:a", "copy",        # 音频编码
+            self.output_folder
+        ])
         return command
 
     # 执行命令
@@ -62,7 +109,14 @@ class VideoConvert:
         command = self.get_command()
         try:
             # 指定编码为 utf-8
-            process = subprocess.Popen(command, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True, encoding='utf-8')
+            process = subprocess.Popen(
+                command,
+                stdout=subprocess.PIPE,
+                stderr=subprocess.PIPE,
+                text=True,
+                encoding='utf-8',
+                creationflags=subprocess.CREATE_NO_WINDOW
+            )
 
             stderr_thread = threading.Thread(target=self.stream_reader, args=(process.stderr, ))
             stderr_thread.start()
@@ -109,8 +163,8 @@ class VideoConvert:
 
 # 多进程处理
 def process_task(args):
-    input_folder, output_folder, target_width, target_height, algorithm, sharpen, crf, preset, codec, Child_pige = args
-    convideo = VideoConvert(
+    input_folder, output_folder, target_width, target_height, algorithm, sharpen, crf, preset, Child_pige = args
+    convideo = VideoTools(
         input_folder = input_folder,
         output_folder = output_folder,
         target_width = target_width,
@@ -119,7 +173,6 @@ def process_task(args):
         sharpen = sharpen,
         crf = crf,
         preset = preset,
-        codec = codec,
         Child_pige = Child_pige
     )
     convideo.run_command()
