@@ -3,8 +3,8 @@
 import os
 import time
 import json
-import random
 
+from random import randint
 from PIL import Image
 from PySide6.QtWidgets import QFileDialog
 from PySide6.QtGui import QEnterEvent
@@ -236,11 +236,11 @@ class Main_Win(WindowConfig):
         all_files = jpg_files + png_files
 
         # 随机设置背景图片
-        random_file = random.randint(0, len(all_files)-1)
-        background_qss = "QFrame#background{border-image: url('config/background/" + all_files[random_file] + "');}"
+        randint_file = randint(0, len(all_files)-1)
+        background_qss = "QFrame#background{border-image: url('config/background/" + all_files[randint_file] + "');}"
 
         # 判断图片主题
-        if self.isbrighttheme(os.path.join(path, all_files[random_file])):
+        if self.isbrighttheme(os.path.join(path, all_files[randint_file])):
             self.setStyleSheet(self.black_qss)
         else:
             self.setStyleSheet(self.white_qss)

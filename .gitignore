@@ -4,3 +4,9 @@ res/qrc/__pycache__/
 debug.py
 config/background copy/
 ffmpeg/
+main-D.spec
+Media-Tools.exe
+package_exe.py
+Setup.py
+dist/
+_internal/
