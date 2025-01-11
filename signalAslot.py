@@ -2,6 +2,7 @@
 
 import os
 import shutil
+import win32api
 
 from PySide6.QtCore import QObject, Signal
 from multiprocessing import Pool, cpu_count, Pipe
@@ -46,6 +47,8 @@ class Slot(QObject):
     def openWindow(self, value):
 
         if value['info'] == '打开主窗口':
+            self.server_process = value['server_process']
+            self.mutex = value['mutex']
             self.MySiganl = value['MySignal']
             self.Main_UI = Main_Win(self.MySiganl)
             self.Main_UI.show()
@@ -53,6 +56,9 @@ class Slot(QObject):
     # 退出程序
     def exitProgram(self, value):
         self.TrayAction.cleanTray()
+        # 终止服务器进程
+        win32api.CloseHandle(self.mutex)
+        self.server_process.terminate()
         os._exit(0)
 
     # 创建托盘
