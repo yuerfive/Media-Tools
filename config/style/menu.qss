@@ -1,0 +1,29 @@
+*
+{
+	font: 10pt "楷体";
+	font-size:13pt;
+	color:white;
+}
+
+/*原始*/
+QMenu
+{
+	background-color:#2F3648;
+	color:white;
+	border : 1px solid #000000;
+}
+
+/*子项*/
+QMenu::item
+{
+	height:20px;
+	margin:5px 10px 5px 10px;
+}
+
+/*悬浮子项*/
+QMenu::item:selected
+{
+	color:#2196F3;
+	padding-bottom:-1px;
+	padding-left:1px
+}

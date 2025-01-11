@@ -1,0 +1,119 @@
+/* 原始样式 */
+*
+{
+	font: 10pt "楷体";
+	font-size: 14pt;
+	color: black;
+	background-color: transparent;
+}
+
+/* 悬停样式 */
+*:hover
+{
+	color:#2196F3;
+}
+
+/* 按下样式 */
+*:pressed
+{
+	padding-bottom: -2px;
+	padding-left: 1px
+}
+
+/* 原始样式 */
+QFrame#background
+{
+	border-image: url(:/background/img/background.jpg);
+}
+
+QLineEdit
+{
+	border-radius: 2px;
+	border: 1px solid black;
+}
+
+QSpinBox
+{
+	border-radius: 2px;
+	border: 1px solid black;
+}
+
+QGroupBox
+{
+	border-radius: 2px;
+	border: 1px solid black;
+}
+
+QPushButton#selectVideoFile,
+QPushButton#selectOutputDir,
+QPushButton#startConvert
+{
+	border-radius: 2px;
+	border: 1px solid black;
+}
+
+/* 悬停样式 */
+QLabel:hover
+{
+	color: black;
+}
+
+/************************************ QRadioButton  ************************************/
+
+
+/* 原始样式 */
+QRadioButton#winMaxAMinRButton::indicator:checked
+{
+	border-image: url(:/winMax/img/max_black.png);
+	width: 15px;
+	height: 15px;
+}
+
+QRadioButton#winMaxAMinRButton::indicator:unchecked
+{
+	border-image: url(:/winMin/img/min_black.png);
+	width: 15px;
+	height: 15px;
+}
+
+/* 悬停样式 */
+QRadioButton#winMaxAMinRButton::indicator:checked:hover
+{
+	border-image: url(:/winMax/img/maxs.png);
+	width: 15px;
+	height: 15px;
+}
+QRadioButton#winMaxAMinRButton::indicator:unchecked:hover
+{
+	border-image: url(:/winMin/img/mins.png);
+	width: 15px;
+	height: 15px;
+}
+
+/* 按下样式 */
+QRadioButton#winMaxAMinRButton:pressed
+{
+	padding-bottom: -2px;
+	padding-left: 1px
+}
+
+
+/************************************ QComboBox  ************************************/
+
+/* 原始样式 */
+QComboBox
+{
+	border-radius: 2px;
+	border: 1px solid black;
+}
+
+/* 选项样式 */
+QComboBox QListView::item {
+	margin: 10px;
+	height: 10px;
+}
+
+/* 下拉选项样式 */
+QComboBox QAbstractItemView {
+	background-color: #8ea2d3;
+}

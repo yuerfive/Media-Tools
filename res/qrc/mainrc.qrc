@@ -1,0 +1,15 @@
+<RCC>
+  <qresource prefix="background">
+    <file>img/background.jpg</file>
+  </qresource>
+  <qresource prefix="winMax">
+    <file>img/max_black.png</file>
+    <file>img/max_white.png</file>
+    <file>img/maxs.png</file>
+  </qresource>
+  <qresource prefix="winMin">
+    <file>img/min_black.png</file>
+    <file>img/min_white.png</file>
+    <file>img/mins.png</file>
+  </qresource>
+</RCC>
