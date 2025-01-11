@@ -3,46 +3,16 @@
 import sys
 import win32event
 import win32api
-import multiprocessing
-from multiprocessing.managers import BaseManager
+from multiprocessing import freeze_support, Process, Queue
 from PySide6.QtWidgets import QApplication
 from PySide6.QtGui import QIcon
 from threading import Thread
+
 from signalAslot import Signal, Slot
+from serverprocess import ServerProcess
 
 # 定义唯一的互斥锁名称
-MUTEX_NAME = "Global\\MyUniqueApplicationInstance"
-
-# 定义全局队列（供所有实例共享）
-shared_queue = None
-
-
-class QueueManager(BaseManager):
-    """队列管理器，用于进程间共享队列"""
-    pass
-
-
-def start_queue_server():
-    """
-    启动共享队列的服务器进程
-    """
-    global shared_queue
-
-    QueueManager.register('get_queue', callable=lambda: shared_queue)
-    manager = QueueManager(address=('127.0.0.1', 50000), authkey=b'secret')
-    shared_queue = multiprocessing.Queue()
-    server = manager.get_server()
-    server.serve_forever()
-
-
-def get_shared_queue():
-    """
-    获取共享队列
-    """
-    QueueManager.register('get_queue')
-    manager = QueueManager(address=('127.0.0.1', 50000), authkey=b'secret')
-    manager.connect()
-    return manager.get_queue()
+MUTEX_NAME = "Global\\MediaTools-ApplicationInstance"
 
 
 def listen_for_messages(queue, MySignal):
@@ -54,6 +24,7 @@ def listen_for_messages(queue, MySignal):
             message = queue.get()  # 阻塞等待消息
             if message == "激活窗口":
                 # 发送激活窗口信号
+                print("收到激活窗口的请求")
                 MySignal.sendInfo({'action': '激活窗口'})
         except Exception as e:
             print(f"消息监听出错: {e}")
@@ -61,7 +32,7 @@ def listen_for_messages(queue, MySignal):
 
 
 if __name__ == '__main__':
-    multiprocessing.freeze_support()
+    freeze_support()
 
     # 创建互斥锁
     mutex = win32event.CreateMutex(None, False, MUTEX_NAME)
@@ -71,19 +42,21 @@ if __name__ == '__main__':
     if last_error == 183:  # ERROR_ALREADY_EXISTS
         try:
             # 获取共享队列并发送激活消息
-            queue = get_shared_queue()
+            queue = ServerProcess.connect_client()
             queue.put("激活窗口")
-            sys.exit(0)
         except Exception as e:
             print(f"无法连接到共享队列: {e}")
-            sys.exit(0)
+        sys.exit(0)
 
-    # 主实例启动共享队列服务器
-    server_process = multiprocessing.Process(target=start_queue_server, daemon=True)
+    # 创建共享队列并启动服务器
+    shared_queue = Queue()
+    server_process = Process(
+        target=ServerProcess.start_server, args=(shared_queue,), daemon=True
+    )
     server_process.start()
 
-    # 获取共享队列
-    queue = get_shared_queue()
+    # 连接到共享队列
+    queue = ServerProcess.connect_client()
 
     # 连接信号和槽
     MySignal = Signal()
