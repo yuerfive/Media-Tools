@@ -40,9 +40,8 @@ Media Tools
 
 ```python
     # 检查是否存在 ffmpeg 程序
-    if os.path.exists(r'ffmpeg\bin\ffmpeg.exe'):
-        self.ffmpeg = r'ffmpeg\bin\ffmpeg.exe'
-    else:
+    self.ffmpeg = r'ffmpeg\bin\ffmpeg.exe'
+    if not os.path.exists(r'ffmpeg\bin\ffmpeg.exe'):
         self.ffmpeg = 'ffmpeg'
 ```
 
