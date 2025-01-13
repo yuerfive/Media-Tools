@@ -8,9 +8,9 @@ from PySide6.QtCore import QObject, Signal
 from multiprocessing import Pool, cpu_count, Pipe
 from threading import Thread
 
-import videotools
-from main_win import Main_Win
-from trayaction import TrayAction
+import video_tools
+from main_win import MainWin
+from tray_action import TrayAction
 
 
 # 自定义信号
@@ -18,64 +18,65 @@ class Signal(QObject):
 
     Signal = Signal(dict)
 
-    def sendInfo(self, value: dict):
+    def send_info(self, value: dict):
         self.Signal.emit(value)
 
 # 自定义槽
 class Slot(QObject):
 
     def __init__(self):
-        self.MySiganl = None
-        self.filenames = []
-        self.OutputInfo_dict = {}
-        self.isAllDone_flag = False
+        self.mysignal = None
+        self.file_names = []
+        self.output_info_dict = {}
+        self.isalldone_flag = False
 
     # 接收信号
-    def receiveInfo(self, value: dict):
+    def receive_info(self, value: dict):
         # print(value)
         branch = {
-            '打开窗口': lambda: self.openWindow(value),
-            '退出程序': lambda: self.exitProgram(value),
-            '创建托盘': lambda: self.createTray(value),
-            '激活窗口': lambda: self.activateWindow(value),
-            '输出信息': lambda: self.showOutputInfo(value),
-            '开始转换': lambda: Thread(target=self.startConvert, args=(value,)).start(),
+            '打开窗口': lambda: self.open_window(value),
+            '退出程序': lambda: self.exit_program(value),
+            '创建托盘': lambda: self.create_tray(value),
+            '激活窗口': lambda: self.activate_window(value),
+            '输出信息': lambda: self.show_output_Info(value),
+            '开始转换': lambda: Thread(target=self.start_convert, args=(value,)).start(),
         }
         branch.get(value['action'], lambda: print(f'未知命令：{value}'))()
 
     # 打开窗口
-    def openWindow(self, value):
+    def open_window(self, value):
 
         if value['info'] == '打开主窗口':
             self.server_process = value['server_process']
             self.mutex = value['mutex']
-            self.MySiganl = value['MySignal']
-            self.Main_UI = Main_Win(self.MySiganl)
-            self.Main_UI.show()
+            self.mysignal = value['mysignal']
+            self.main_win = MainWin(self.mysignal)
+            self.main_win.show()
 
     # 退出程序
-    def exitProgram(self, value):
-        self.TrayAction.cleanTray()
+    def exit_program(self, value):
+        # 清理托盘资源
+        self.tray_action.clean_tray()
         # 终止服务器进程
         win32api.CloseHandle(self.mutex)
         self.server_process.terminate()
         os._exit(0)
 
     # 创建托盘
-    def createTray(self, value):
-        self.MySiganl = value['MySignal']
-        self.TrayAction = TrayAction(self.MySiganl)
+    def create_tray(self, value):
+        self.mysignal = value['mysignal']
+        self.tray_action = TrayAction(self.mysignal)
 
     # 激活窗口
-    def activateWindow(self, value):
-        if self.Main_UI:
-            self.Main_UI.show()
-            self.Main_UI.activateWindow()
+    def activate_window(self, value):
+        if self.main_win:
+            self.main_win.show()
+            self.main_win.activateWindow()
 
     # 开始转换
-    def startConvert(self, value):
+    def start_convert(self, value):
         value = value['info']
-        self.filenames = [os.path.basename(i) for i in value['选择文件路径']]
+        self.file_names = [os.path.basename(i) for i in value['选择文件路径']]
 
         # 检查输入参数
         if not value['选择文件路径'] or not value['输出文件路径'] or not value['转换大小'] or not value['使用算法'] or not value['转换质量'] or not value['编码预设']:
@@ -94,11 +95,11 @@ class Slot(QObject):
         pipe_list = []  # 管道列表
         for input_video in value['选择文件路径']:
 
-            Main_pige, Child_pige = Pipe()
-            pipe_list.append(Main_pige)  # 记录主进程的管道
+            main_pige, child_pige = Pipe()
+            pipe_list.append(main_pige)  # 记录主进程的管道
 
-            filename = os.path.basename(input_video)
-            output_video = os.path.join(value['输出文件路径'], f"{filename.split('.')[0]}_resized.mp4")
+            file_name = os.path.basename(input_video)
+            output_video = os.path.join(value['输出文件路径'], f"{file_name.split('.')[0]}_resized.mp4")
             target_width, target_height = value['转换大小'].split(' * ')
             task_list.append((
                 input_video,
@@ -109,12 +110,12 @@ class Slot(QObject):
                 value['锐化'],
                 value['转换质量'],
                 value['编码预设'],
-                Child_pige
+                child_pige
             ))
 
         # 多进程处理
         with Pool(cpu_count()) as pool:
-            pool.map_async(videotools.process_task, task_list)
+            pool.map_async(video_tools.process_task, task_list)
 
             # 主进程接收消息
             completed = 0
@@ -122,31 +123,31 @@ class Slot(QObject):
                 for pipe in pipe_list:
                     if pipe.poll():
                         message = pipe.recv()
-                        self.MySiganl.sendInfo({'action': '输出信息', 'info': message})
+                        self.mysignal.send_info({'action': '输出信息', 'info': message})
                         if "已完成" in message:
                             completed += 1
-            self.isAllDone_flag = True
+            self.isalldone_flag = True
 
     # 输出信息
-    def showOutputInfo(self, value):
+    def show_output_Info(self, value):
 
         def show_info():
-            self.Main_UI.ui.outputInfo.setText('\n' + '\n\n'.join(info for _, info in self.OutputInfo_dict.items()).strip())
+            self.main_win.ui.output_info.setText('\n' + '\n\n'.join(info for _, info in self.output_info_dict.items()).strip())
 
         value = value['info']
 
         filename = value.split()[0]
-        if filename not in self.filenames:
+        if filename not in self.file_names:
             return
 
         if '已完成' in value:
-            value = self.OutputInfo_dict[filename]
+            value = self.output_info_dict[filename]
             value = value.replace('进行中', '已完成')
-            self.OutputInfo_dict[filename] = value
+            self.output_info_dict[filename] = value
             Thread(target=show_info).start()
-            if self.isAllDone_flag:
-                self.OutputInfo_dict = {}
-                self.isAllDone_flag = False
+            if self.isalldone_flag:
+                self.output_info_dict = {}
+                self.isalldone_flag = False
         else:
-            self.OutputInfo_dict[filename] = value
+            self.output_info_dict[filename] = value
             Thread(target=show_info).start()

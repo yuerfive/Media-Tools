@@ -6,7 +6,7 @@ import threading
 
 
 class VideoTools:
-    def __init__(self, input_folder, output_folder, target_width, target_height, algorithm, sharpen, crf, preset, Child_pige):
+    def __init__(self, input_folder, output_folder, target_width, target_height, algorithm, sharpen, crf, preset, child_pige):
         self.input_folder = input_folder
         self.output_folder = output_folder
         self.target_width = target_width
@@ -18,7 +18,7 @@ class VideoTools:
 
         self.info = ''
         self.filename = os.path.basename(self.input_folder)
-        self.Child_pige = Child_pige
+        self.child_pige = child_pige
 
         # 映射字段到含义
         self.field_map = {
@@ -125,7 +125,7 @@ class VideoTools:
             stderr_thread.join()
 
             # 发送完成信号
-            self.Child_pige.send(f'{self.filename}  已完成')
+            self.child_pige.send(f'{self.filename}  已完成')
 
             return
         except subprocess.CalledProcessError as e:
@@ -153,7 +153,7 @@ class VideoTools:
                         else:
                             self.info += i
                     self.info += '  进行中'
-                    self.Child_pige.send(self.info)
+                    self.child_pige.send(self.info)
 
         except Exception:
             pass
@@ -162,7 +162,7 @@ class VideoTools:
 
 # 多进程处理
 def process_task(args):
-    input_folder, output_folder, target_width, target_height, algorithm, sharpen, crf, preset, Child_pige = args
+    input_folder, output_folder, target_width, target_height, algorithm, sharpen, crf, preset, child_pige = args
     convideo = VideoTools(
         input_folder = input_folder,
         output_folder = output_folder,
@@ -172,6 +172,6 @@ def process_task(args):
         sharpen = sharpen,
         crf = crf,
         preset = preset,
-        Child_pige = Child_pige
+        child_pige = child_pige
     )
     convideo.run_command()

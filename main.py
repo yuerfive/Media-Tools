@@ -8,14 +8,14 @@ from PySide6.QtWidgets import QApplication
 from PySide6.QtGui import QIcon
 from threading import Thread
 
-from signalAslot import Signal, Slot
-from serverprocess import ServerProcess
+from signal_slot import Signal, Slot
+from server_process import ServerProcess
 
 # 定义唯一的互斥锁名称
 MUTEX_NAME = "Global\\MediaTools-ApplicationInstance"
 
 
-def listen_for_messages(queue, MySignal):
+def listen_messages(queue, mysignal):
     """
     后台线程：监听消息队列
     """
@@ -25,7 +25,7 @@ def listen_for_messages(queue, MySignal):
             if message == "激活窗口":
                 # 发送激活窗口信号
                 print("收到激活窗口的请求")
-                MySignal.sendInfo({'action': '激活窗口'})
+                mysignal.send_info({'action': '激活窗口'})
         except Exception as e:
             print(f"消息监听出错: {e}")
             break
@@ -59,9 +59,9 @@ if __name__ == '__main__':
     queue = ServerProcess.connect_client()
 
     # 连接信号和槽
-    MySignal = Signal()
-    MySlot = Slot()
-    MySignal.Signal.connect(MySlot.receiveInfo)
+    mysignal = Signal()
+    myslot = Slot()
+    mysignal.Signal.connect(myslot.receive_info)
 
     # 创建应用
     app = QApplication([])
@@ -69,10 +69,10 @@ if __name__ == '__main__':
     QApplication.setQuitOnLastWindowClosed(False)
 
     # 启动消息监听线程
-    Thread(target=listen_for_messages, args=(queue, MySignal), daemon=True).start()
+    Thread(target=listen_messages, args=(queue, mysignal), daemon=True).start()
 
     # 发送信号创建主窗口和托盘
-    MySignal.sendInfo({'action': '打开窗口', 'info': '打开主窗口', 'MySignal': MySignal, 'mutex': mutex, 'server_process': server_process})
-    MySignal.sendInfo({'action': '创建托盘', 'MySignal': MySignal})
+    mysignal.send_info({'action': '打开窗口', 'info': '打开主窗口', 'mysignal': mysignal, 'mutex': mutex, 'server_process': server_process})
+    mysignal.send_info({'action': '创建托盘', 'mysignal': mysignal})
 
     sys.exit(app.exec())

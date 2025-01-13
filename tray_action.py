@@ -7,13 +7,13 @@ from PySide6.QtCore import QPoint
 
 # 系统托盘
 class TrayAction:
-    def __init__(self, MySignal):
-        self.MySignal = MySignal
+    def __init__(self, mysignal):
+        self.mysignal = mysignal
 
         self._restoreAction = QAction("显示主界面")
-        self._restoreAction.triggered.connect(lambda: self.MySignal.sendInfo({'action': '激活窗口'}))
+        self._restoreAction.triggered.connect(lambda: self.mysignal.send_info({'action': '激活窗口'}))
         self._quitAction = QAction("退出")
-        self._quitAction.triggered.connect(lambda: self.MySignal.sendInfo({'action': '退出程序'}))
+        self._quitAction.triggered.connect(lambda: self.mysignal.send_info({'action': '退出程序'}))
         self.createTrayIcon()
 
     def createTrayIcon(self):
@@ -37,18 +37,18 @@ class TrayAction:
         self._trayIcon.show()
 
         # 动作信号
-        self._trayIcon.activated.connect(self.iconActivated)
+        self._trayIcon.activated.connect(self.icon_activated)
 
-    def iconActivated(self, reason):
+    def icon_activated(self, reason):
         # 双击
         if reason == QSystemTrayIcon.DoubleClick:
-            self.MySignal.sendInfo({'action': '激活窗口'})
+            self.mysignal.send_info({'action': '激活窗口'})
         # 右击
         if reason == QSystemTrayIcon.Context:
             # 界面跟随鼠标
             self._trayIconMenu.exec(QPoint(QCursor.pos().x() - 55, QCursor.pos().y() - 90))
 
-    def cleanTray(self):
+    def clean_tray(self):
         self._restoreAction = None
         self._quitAction = None
         self._trayIcon = None

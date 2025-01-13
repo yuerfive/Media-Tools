@@ -44,9 +44,9 @@ QGroupBox
 	border: 1px solid black;
 }
 
-QPushButton#selectVideoFile,
-QPushButton#selectOutputDir,
-QPushButton#startConvert
+QPushButton#select_video_file,
+QPushButton#select_output_dir,
+QPushButton#start_convert
 {
 	border-radius: 2px;
 	border: 1px solid black;
@@ -62,14 +62,14 @@ QLabel:hover
 
 
 /* 原始样式 */
-QRadioButton#winMaxAMinRButton::indicator:checked
+QRadioButton#maxAmin_win_button::indicator:checked
 {
 	border-image: url(:/winMax/img/max_black.png);
 	width: 15px;
 	height: 15px;
 }
 
-QRadioButton#winMaxAMinRButton::indicator:unchecked
+QRadioButton#maxAmin_win_button::indicator:unchecked
 {
 	border-image: url(:/winMin/img/min_black.png);
 	width: 15px;
@@ -77,13 +77,13 @@ QRadioButton#winMaxAMinRButton::indicator:unchecked
 }
 
 /* 悬停样式 */
-QRadioButton#winMaxAMinRButton::indicator:checked:hover
+QRadioButton#maxAmin_win_button::indicator:checked:hover
 {
 	border-image: url(:/winMax/img/maxs.png);
 	width: 15px;
 	height: 15px;
 }
-QRadioButton#winMaxAMinRButton::indicator:unchecked:hover
+QRadioButton#maxAmin_win_button::indicator:unchecked:hover
 {
 	border-image: url(:/winMin/img/mins.png);
 	width: 15px;
@@ -91,7 +91,7 @@ QRadioButton#winMaxAMinRButton::indicator:unchecked:hover
 }
 
 /* 按下样式 */
-QRadioButton#winMaxAMinRButton:pressed
+QRadioButton#maxAmin_win_button:pressed
 {
 	padding-bottom: -2px;
 	padding-left: 1px

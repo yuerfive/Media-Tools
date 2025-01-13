@@ -21,7 +21,7 @@ from PySide6.QtWidgets import (QApplication, QComboBox, QFrame, QGroupBox,
     QVBoxLayout, QWidget)
 
 from ..qrc import mainrc_rc
-from ..ui.controloverride import QMyComboBox
+from ..ui.control_overwrite import QMyComboBox
 
 
 class Ui_Form(object):
@@ -183,30 +183,30 @@ class Ui_Form(object):
         self.horizontalLayout_12 = QHBoxLayout()
         self.horizontalLayout_12.setSpacing(20)
         self.horizontalLayout_12.setObjectName(u"horizontalLayout_12")
-        self.winMiniButton = QPushButton(self.frame_9)
-        self.winMiniButton.setObjectName(u"winMiniButton")
-        sizePolicy.setHeightForWidth(self.winMiniButton.sizePolicy().hasHeightForWidth())
-        self.winMiniButton.setSizePolicy(sizePolicy)
-        self.winMiniButton.setMaximumSize(QSize(50, 16777215))
+        self.min_win_button = QPushButton(self.frame_9)
+        self.min_win_button.setObjectName(u"min_win_button")
+        sizePolicy.setHeightForWidth(self.min_win_button.sizePolicy().hasHeightForWidth())
+        self.min_win_button.setSizePolicy(sizePolicy)
+        self.min_win_button.setMaximumSize(QSize(50, 16777215))
 
-        self.horizontalLayout_12.addWidget(self.winMiniButton)
+        self.horizontalLayout_12.addWidget(self.min_win_button)
 
-        self.winMaxAMinRButton = QRadioButton(self.frame_9)
-        self.winMaxAMinRButton.setObjectName(u"winMaxAMinRButton")
-        sizePolicy.setHeightForWidth(self.winMaxAMinRButton.sizePolicy().hasHeightForWidth())
-        self.winMaxAMinRButton.setSizePolicy(sizePolicy)
-        self.winMaxAMinRButton.setSizeIncrement(QSize(0, 0))
-        self.winMaxAMinRButton.setAutoExclusive(False)
+        self.maxAmin_win_button = QRadioButton(self.frame_9)
+        self.maxAmin_win_button.setObjectName(u"maxAmin_win_button")
+        sizePolicy.setHeightForWidth(self.maxAmin_win_button.sizePolicy().hasHeightForWidth())
+        self.maxAmin_win_button.setSizePolicy(sizePolicy)
+        self.maxAmin_win_button.setSizeIncrement(QSize(0, 0))
+        self.maxAmin_win_button.setAutoExclusive(False)
 
-        self.horizontalLayout_12.addWidget(self.winMaxAMinRButton)
+        self.horizontalLayout_12.addWidget(self.maxAmin_win_button)
 
-        self.closeButton = QPushButton(self.frame_9)
-        self.closeButton.setObjectName(u"closeButton")
-        sizePolicy.setHeightForWidth(self.closeButton.sizePolicy().hasHeightForWidth())
-        self.closeButton.setSizePolicy(sizePolicy)
-        self.closeButton.setMaximumSize(QSize(26, 16777215))
+        self.close_button = QPushButton(self.frame_9)
+        self.close_button.setObjectName(u"close_button")
+        sizePolicy.setHeightForWidth(self.close_button.sizePolicy().hasHeightForWidth())
+        self.close_button.setSizePolicy(sizePolicy)
+        self.close_button.setMaximumSize(QSize(26, 16777215))
 
-        self.horizontalLayout_12.addWidget(self.closeButton)
+        self.horizontalLayout_12.addWidget(self.close_button)
 
 
         self.horizontalLayout_11.addLayout(self.horizontalLayout_12)
@@ -232,16 +232,16 @@ class Ui_Form(object):
         self.frame_4.setSizePolicy(sizePolicy2)
         self.verticalLayout_2 = QVBoxLayout(self.frame_4)
         self.verticalLayout_2.setObjectName(u"verticalLayout_2")
-        self.selectVideoFile = QPushButton(self.frame_4)
-        self.selectVideoFile.setObjectName(u"selectVideoFile")
+        self.select_video_file = QPushButton(self.frame_4)
+        self.select_video_file.setObjectName(u"select_video_file")
         sizePolicy3 = QSizePolicy(QSizePolicy.Preferred, QSizePolicy.Fixed)
         sizePolicy3.setHorizontalStretch(0)
         sizePolicy3.setVerticalStretch(0)
-        sizePolicy3.setHeightForWidth(self.selectVideoFile.sizePolicy().hasHeightForWidth())
-        self.selectVideoFile.setSizePolicy(sizePolicy3)
-        self.selectVideoFile.setMinimumSize(QSize(0, 26))
+        sizePolicy3.setHeightForWidth(self.select_video_file.sizePolicy().hasHeightForWidth())
+        self.select_video_file.setSizePolicy(sizePolicy3)
+        self.select_video_file.setMinimumSize(QSize(0, 26))
 
-        self.verticalLayout_2.addWidget(self.selectVideoFile)
+        self.verticalLayout_2.addWidget(self.select_video_file)
 
         self.verticalSpacer = QSpacerItem(20, 40, QSizePolicy.Minimum, QSizePolicy.Expanding)
 
@@ -265,11 +265,11 @@ class Ui_Form(object):
         self.groupBox.setObjectName(u"groupBox")
         self.horizontalLayout_8 = QHBoxLayout(self.groupBox)
         self.horizontalLayout_8.setObjectName(u"horizontalLayout_8")
-        self.outputInfo = QLabel(self.groupBox)
-        self.outputInfo.setObjectName(u"outputInfo")
-        self.outputInfo.setAlignment(Qt.AlignLeading|Qt.AlignLeft|Qt.AlignTop)
+        self.output_info = QLabel(self.groupBox)
+        self.output_info.setObjectName(u"output_info")
+        self.output_info.setAlignment(Qt.AlignLeading|Qt.AlignLeft|Qt.AlignTop)
 
-        self.horizontalLayout_8.addWidget(self.outputInfo)
+        self.horizontalLayout_8.addWidget(self.output_info)
 
 
         self.horizontalLayout_9.addWidget(self.groupBox)
@@ -312,20 +312,20 @@ class Ui_Form(object):
 
         self.horizontalLayout_3.addWidget(self.label)
 
-        self.targetSize = QMyComboBox(self.frame_7)
-        self.targetSize.addItem("")
-        self.targetSize.addItem("")
-        self.targetSize.addItem("")
-        self.targetSize.addItem("")
-        self.targetSize.setObjectName(u"targetSize")
+        self.target_size = QMyComboBox(self.frame_7)
+        self.target_size.addItem("")
+        self.target_size.addItem("")
+        self.target_size.addItem("")
+        self.target_size.addItem("")
+        self.target_size.setObjectName(u"target_size")
         sizePolicy8 = QSizePolicy(QSizePolicy.Preferred, QSizePolicy.Fixed)
         sizePolicy8.setHorizontalStretch(3)
         sizePolicy8.setVerticalStretch(0)
-        sizePolicy8.setHeightForWidth(self.targetSize.sizePolicy().hasHeightForWidth())
-        self.targetSize.setSizePolicy(sizePolicy8)
-        self.targetSize.setMinimumSize(QSize(0, 26))
+        sizePolicy8.setHeightForWidth(self.target_size.sizePolicy().hasHeightForWidth())
+        self.target_size.setSizePolicy(sizePolicy8)
+        self.target_size.setMinimumSize(QSize(0, 26))
 
-        self.horizontalLayout_3.addWidget(self.targetSize)
+        self.horizontalLayout_3.addWidget(self.target_size)
 
 
         self.horizontalLayout_7.addWidget(self.frame_7)
@@ -349,18 +349,18 @@ class Ui_Form(object):
 
         self.horizontalLayout_4.addWidget(self.label_4)
 
-        self.selectAlgorithm = QMyComboBox(self.frame_6)
-        self.selectAlgorithm.addItem("")
-        self.selectAlgorithm.addItem("")
-        self.selectAlgorithm.addItem("")
-        self.selectAlgorithm.addItem("")
-        self.selectAlgorithm.addItem("")
-        self.selectAlgorithm.setObjectName(u"selectAlgorithm")
-        sizePolicy8.setHeightForWidth(self.selectAlgorithm.sizePolicy().hasHeightForWidth())
-        self.selectAlgorithm.setSizePolicy(sizePolicy8)
-        self.selectAlgorithm.setMinimumSize(QSize(0, 26))
+        self.select_algorithm = QMyComboBox(self.frame_6)
+        self.select_algorithm.addItem("")
+        self.select_algorithm.addItem("")
+        self.select_algorithm.addItem("")
+        self.select_algorithm.addItem("")
+        self.select_algorithm.addItem("")
+        self.select_algorithm.setObjectName(u"select_algorithm")
+        sizePolicy8.setHeightForWidth(self.select_algorithm.sizePolicy().hasHeightForWidth())
+        self.select_algorithm.setSizePolicy(sizePolicy8)
+        self.select_algorithm.setMinimumSize(QSize(0, 26))
 
-        self.horizontalLayout_4.addWidget(self.selectAlgorithm)
+        self.horizontalLayout_4.addWidget(self.select_algorithm)
 
 
         self.horizontalLayout_7.addWidget(self.frame_6)
@@ -384,13 +384,13 @@ class Ui_Form(object):
 
         self.horizontalLayout_5.addWidget(self.label_3)
 
-        self.convertQuality = QSpinBox(self.frame_8)
-        self.convertQuality.setObjectName(u"convertQuality")
-        sizePolicy8.setHeightForWidth(self.convertQuality.sizePolicy().hasHeightForWidth())
-        self.convertQuality.setSizePolicy(sizePolicy8)
-        self.convertQuality.setMinimumSize(QSize(0, 26))
+        self.convert_quality = QSpinBox(self.frame_8)
+        self.convert_quality.setObjectName(u"convert_quality")
+        sizePolicy8.setHeightForWidth(self.convert_quality.sizePolicy().hasHeightForWidth())
+        self.convert_quality.setSizePolicy(sizePolicy8)
+        self.convert_quality.setMinimumSize(QSize(0, 26))
 
-        self.horizontalLayout_5.addWidget(self.convertQuality)
+        self.horizontalLayout_5.addWidget(self.convert_quality)
 
 
         self.horizontalLayout_7.addWidget(self.frame_8)
@@ -401,16 +401,16 @@ class Ui_Form(object):
         self.frame_5.setSizePolicy(sizePolicy2)
         self.horizontalLayout_6 = QHBoxLayout(self.frame_5)
         self.horizontalLayout_6.setObjectName(u"horizontalLayout_6")
-        self.sharpenSwitch = QRadioButton(self.frame_5)
-        self.sharpenSwitch.setObjectName(u"sharpenSwitch")
+        self.sharpen_switch = QRadioButton(self.frame_5)
+        self.sharpen_switch.setObjectName(u"sharpen_switch")
         sizePolicy9 = QSizePolicy(QSizePolicy.Fixed, QSizePolicy.Fixed)
         sizePolicy9.setHorizontalStretch(0)
         sizePolicy9.setVerticalStretch(0)
-        sizePolicy9.setHeightForWidth(self.sharpenSwitch.sizePolicy().hasHeightForWidth())
-        self.sharpenSwitch.setSizePolicy(sizePolicy9)
-        self.sharpenSwitch.setMinimumSize(QSize(0, 26))
+        sizePolicy9.setHeightForWidth(self.sharpen_switch.sizePolicy().hasHeightForWidth())
+        self.sharpen_switch.setSizePolicy(sizePolicy9)
+        self.sharpen_switch.setMinimumSize(QSize(0, 26))
 
-        self.horizontalLayout_6.addWidget(self.sharpenSwitch)
+        self.horizontalLayout_6.addWidget(self.sharpen_switch)
 
 
         self.horizontalLayout_7.addWidget(self.frame_5)
@@ -420,38 +420,38 @@ class Ui_Form(object):
 
         self.horizontalLayout_2 = QHBoxLayout()
         self.horizontalLayout_2.setObjectName(u"horizontalLayout_2")
-        self.selectOutputDir = QPushButton(self.frame_3)
-        self.selectOutputDir.setObjectName(u"selectOutputDir")
+        self.select_output_dir = QPushButton(self.frame_3)
+        self.select_output_dir.setObjectName(u"select_output_dir")
         sizePolicy10 = QSizePolicy(QSizePolicy.Preferred, QSizePolicy.Fixed)
         sizePolicy10.setHorizontalStretch(7)
         sizePolicy10.setVerticalStretch(0)
-        sizePolicy10.setHeightForWidth(self.selectOutputDir.sizePolicy().hasHeightForWidth())
-        self.selectOutputDir.setSizePolicy(sizePolicy10)
-        self.selectOutputDir.setMinimumSize(QSize(0, 26))
+        sizePolicy10.setHeightForWidth(self.select_output_dir.sizePolicy().hasHeightForWidth())
+        self.select_output_dir.setSizePolicy(sizePolicy10)
+        self.select_output_dir.setMinimumSize(QSize(0, 26))
 
-        self.horizontalLayout_2.addWidget(self.selectOutputDir)
+        self.horizontalLayout_2.addWidget(self.select_output_dir)
 
-        self.outPutDirInfo = QLineEdit(self.frame_3)
-        self.outPutDirInfo.setObjectName(u"outPutDirInfo")
+        self.output_dir_info = QLineEdit(self.frame_3)
+        self.output_dir_info.setObjectName(u"output_dir_info")
         sizePolicy11 = QSizePolicy(QSizePolicy.Preferred, QSizePolicy.Fixed)
         sizePolicy11.setHorizontalStretch(41)
         sizePolicy11.setVerticalStretch(0)
-        sizePolicy11.setHeightForWidth(self.outPutDirInfo.sizePolicy().hasHeightForWidth())
-        self.outPutDirInfo.setSizePolicy(sizePolicy11)
-        self.outPutDirInfo.setMinimumSize(QSize(0, 26))
+        sizePolicy11.setHeightForWidth(self.output_dir_info.sizePolicy().hasHeightForWidth())
+        self.output_dir_info.setSizePolicy(sizePolicy11)
+        self.output_dir_info.setMinimumSize(QSize(0, 26))
 
-        self.horizontalLayout_2.addWidget(self.outPutDirInfo)
+        self.horizontalLayout_2.addWidget(self.output_dir_info)
 
-        self.startConvert = QPushButton(self.frame_3)
-        self.startConvert.setObjectName(u"startConvert")
+        self.start_convert = QPushButton(self.frame_3)
+        self.start_convert.setObjectName(u"start_convert")
         sizePolicy12 = QSizePolicy(QSizePolicy.Preferred, QSizePolicy.Fixed)
         sizePolicy12.setHorizontalStretch(8)
         sizePolicy12.setVerticalStretch(0)
-        sizePolicy12.setHeightForWidth(self.startConvert.sizePolicy().hasHeightForWidth())
-        self.startConvert.setSizePolicy(sizePolicy12)
-        self.startConvert.setMinimumSize(QSize(0, 26))
+        sizePolicy12.setHeightForWidth(self.start_convert.sizePolicy().hasHeightForWidth())
+        self.start_convert.setSizePolicy(sizePolicy12)
+        self.start_convert.setMinimumSize(QSize(0, 26))
 
-        self.horizontalLayout_2.addWidget(self.startConvert)
+        self.horizontalLayout_2.addWidget(self.start_convert)
 
 
         self.verticalLayout.addLayout(self.horizontalLayout_2)
@@ -470,29 +470,29 @@ class Ui_Form(object):
 
     def retranslateUi(self, Form):
         Form.setWindowTitle(QCoreApplication.translate("Form", u"Media-Tools", None))
-        self.winMiniButton.setText(QCoreApplication.translate("Form", u"\uff0d", None))
-        self.winMaxAMinRButton.setText("")
-        self.closeButton.setText(QCoreApplication.translate("Form", u"\u00d7", None))
-        self.selectVideoFile.setText(QCoreApplication.translate("Form", u"\u9009\u62e9\u89c6\u9891\u6587\u4ef6", None))
+        self.min_win_button.setText(QCoreApplication.translate("Form", u"\uff0d", None))
+        self.maxAmin_win_button.setText("")
+        self.close_button.setText(QCoreApplication.translate("Form", u"\u00d7", None))
+        self.select_video_file.setText(QCoreApplication.translate("Form", u"\u9009\u62e9\u89c6\u9891\u6587\u4ef6", None))
         self.groupBox.setTitle(QCoreApplication.translate("Form", u"\u8f93\u51fa\u4fe1\u606f", None))
-        self.outputInfo.setText("")
+        self.output_info.setText("")
         self.label.setText(QCoreApplication.translate("Form", u"\u8f6c\u6362\u5927\u5c0f", None))
-        self.targetSize.setItemText(0, QCoreApplication.translate("Form", u"1280 * 720", None))
-        self.targetSize.setItemText(1, QCoreApplication.translate("Form", u"1920 * 1080", None))
-        self.targetSize.setItemText(2, QCoreApplication.translate("Form", u"2560 * 1440", None))
-        self.targetSize.setItemText(3, QCoreApplication.translate("Form", u"3840 * 2160", None))
+        self.target_size.setItemText(0, QCoreApplication.translate("Form", u"1280 * 720", None))
+        self.target_size.setItemText(1, QCoreApplication.translate("Form", u"1920 * 1080", None))
+        self.target_size.setItemText(2, QCoreApplication.translate("Form", u"2560 * 1440", None))
+        self.target_size.setItemText(3, QCoreApplication.translate("Form", u"3840 * 2160", None))
 
         self.label_4.setText(QCoreApplication.translate("Form", u"\u4f7f\u7528\u7b97\u6cd5", None))
-        self.selectAlgorithm.setItemText(0, QCoreApplication.translate("Form", u"lanczos", None))
-        self.selectAlgorithm.setItemText(1, QCoreApplication.translate("Form", u"neighbor", None))
-        self.selectAlgorithm.setItemText(2, QCoreApplication.translate("Form", u"bilinear", None))
-        self.selectAlgorithm.setItemText(3, QCoreApplication.translate("Form", u"bicubic", None))
-        self.selectAlgorithm.setItemText(4, QCoreApplication.translate("Form", u"spline", None))
+        self.select_algorithm.setItemText(0, QCoreApplication.translate("Form", u"lanczos", None))
+        self.select_algorithm.setItemText(1, QCoreApplication.translate("Form", u"neighbor", None))
+        self.select_algorithm.setItemText(2, QCoreApplication.translate("Form", u"bilinear", None))
+        self.select_algorithm.setItemText(3, QCoreApplication.translate("Form", u"bicubic", None))
+        self.select_algorithm.setItemText(4, QCoreApplication.translate("Form", u"spline", None))
 
         self.label_3.setText(QCoreApplication.translate("Form", u"\u8f6c\u6362\u8d28\u91cf", None))
-        self.sharpenSwitch.setText(QCoreApplication.translate("Form", u"\u9510\u5316", None))
-        self.selectOutputDir.setText(QCoreApplication.translate("Form", u"\u9009\u62e9\u8f93\u51fa\u76ee\u5f55", None))
-        self.outPutDirInfo.setText("")
-        self.startConvert.setText(QCoreApplication.translate("Form", u"\u5f00\u59cb\u8f6c\u6362", None))
+        self.sharpen_switch.setText(QCoreApplication.translate("Form", u"\u9510\u5316", None))
+        self.select_output_dir.setText(QCoreApplication.translate("Form", u"\u9009\u62e9\u8f93\u51fa\u76ee\u5f55", None))
+        self.output_dir_info.setText("")
+        self.start_convert.setText(QCoreApplication.translate("Form", u"\u5f00\u59cb\u8f6c\u6362", None))
     # retranslateUi
 

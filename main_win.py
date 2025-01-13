@@ -10,25 +10,25 @@ from PySide6.QtWidgets import QFileDialog
 from PySide6.QtGui import QEnterEvent
 from PySide6.QtCore import Qt, QTimer, QStandardPaths
 
-from windowconfig import WindowConfig
+from windowConfig import WindowConfig
 from res.ui import main_win_ui
 
 
 # 主窗口
-class Main_Win(WindowConfig):
+class MainWin(WindowConfig):
 
-    def __init__(self, MySignal, parent=None):
-        super(Main_Win, self).__init__(parent)
+    def __init__(self, mysignal, parent=None):
+        super(MainWin, self).__init__(parent)
         self.ui = main_win_ui.Ui_Form()
         self.ui.setupUi(self)
-        self.MySignal = MySignal
+        self.mysignal = mysignal
         self.init_ui()
 
-        self.initialize()
-        self.controlSignal()
+        self.init_var()
+        self.control_signal()
 
-    # 初始化
-    def initialize(self):
+    # 初始化变量
+    def init_var(self):
 
         # 读取初始化配置文件
         with open(r'config\init_config.json', 'r', encoding='utf-8') as f:
@@ -42,18 +42,14 @@ class Main_Win(WindowConfig):
             self.white_qss = f.read()
 
         # 输出信息label自动换行
-        self.ui.outputInfo.setWordWrap(True)
+        self.ui.output_info.setWordWrap(True)
 
         # 双击最大最小化鼠标点击时间标志
-        self.doubleClickTimeFlag = 0
-        # 最大窗口大小
-        self.maxWindowSize = []
+        self.doubleclick_timeflag = 0
+        # 窗口最大尺寸
+        self.window_max_size = []
         # 界面事件初始化
-        self.windowEventInit()
-
-        # 初始化 flag 和计时器
-        self.ctrlFlag = self.saveFlag = self.replaceFlag = False
-        self.timeFlag1 = self.timeFlag2 = self.timeResult = 0
+        self.window_event_init()
 
         # 每隔十分钟更新一次背景图片
         self.changeBackground()
@@ -62,48 +58,48 @@ class Main_Win(WindowConfig):
         self.timer.start(600000)
 
     # 控件信号连接
-    def controlSignal(self):
+    def control_signal(self):
 
         # 最小化到任务栏
-        self.ui.winMiniButton.clicked.connect(lambda: self.showMinimized())
+        self.ui.min_win_button.clicked.connect(lambda: self.showMinimized())
 
         # 最大化与最小化
-        self.ui.winMaxAMinRButton.toggled.connect(lambda _: self.winMaxAndMin(self.ui.winMaxAMinRButton.isChecked()))
+        self.ui.maxAmin_win_button.toggled.connect(lambda _: self.winMaxAndMin(self.ui.maxAmin_win_button.isChecked()))
 
         # 关闭窗口
-        self.ui.closeButton.clicked.connect(lambda: self.close())
+        self.ui.close_button.clicked.connect(lambda: self.close())
 
         # 选择视频文件
-        self.ui.selectVideoFile.clicked.connect(lambda: self.selectVideoFile())
+        self.ui.select_video_file.clicked.connect(lambda: self.select_video_file())
 
         # 选择输出文件夹
-        self.outPutDirInfo()
-        self.ui.selectOutputDir.clicked.connect(lambda: self.selectOutputDir())
+        self.output_dir_info()
+        self.ui.select_output_dir.clicked.connect(lambda: self.select_output_dir())
 
         # 转换大小
-        self.targetSizeChange(self.init_config['转换大小'])
-        self.ui.targetSize.currentTextChanged.connect(lambda text: self.targetSizeChange(text))
+        self.change_target_size(self.init_config['转换大小'])
+        self.ui.target_size.currentTextChanged.connect(lambda text: self.change_target_size(text))
 
         # 算法选择
-        self.algorithmChange(self.init_config['使用算法'])
-        self.ui.selectAlgorithm.currentTextChanged.connect(lambda text: self.algorithmChange(text))
+        self.change_algorithm(self.init_config['使用算法'])
+        self.ui.select_algorithm.currentTextChanged.connect(lambda text: self.change_algorithm(text))
 
         # 转换质量
-        self.ui.convertQuality.setValue(self.init_config['转换质量'])
-        self.ui.convertQuality.valueChanged.connect(lambda value: self.convertQualityChange(value))
+        self.ui.convert_quality.setValue(self.init_config['转换质量'])
+        self.ui.convert_quality.valueChanged.connect(lambda value: self.change_convert_quality(value))
 
         # 是否锐化
-        self.sharpenSwitchChange(self.init_config['锐化'])
-        self.ui.sharpenSwitch.toggled.connect(lambda state: self.sharpenSwitchChange(state))
+        self.change_sharpen_switch(self.init_config['锐化'])
+        self.ui.sharpen_switch.toggled.connect(lambda state: self.change_sharpen_switch(state))
 
         # 开始转换
-        self.ui.startConvert.clicked.connect(lambda: self.MySignal.sendInfo({'action': '开始转换', 'info': self.init_config}))
+        self.ui.start_convert.clicked.connect(lambda: self.mysignal.send_info({'action': '开始转换', 'info': self.init_config}))
 
 
 #   --------------------------------------------------界面事件-------------------------------------------------
 
     # 界面事件初始化
-    def windowEventInit(self):
+    def window_event_init(self):
 
         # 扳机初始化
         self._move_drag = False
@@ -122,7 +118,7 @@ class Main_Win(WindowConfig):
         # 鼠标进入其它控件后还原为标准鼠标样式
         if isinstance(event, QEnterEvent):
             self.setCursor(Qt.ArrowCursor)
-        return super(Main_Win, self).eventFilter(obj, event)
+        return super(MainWin, self).eventFilter(obj, event)
 
     # 鼠标按下事件
     def mousePressEvent(self, event):
@@ -203,13 +199,13 @@ class Main_Win(WindowConfig):
     def winMaxAndMin(self, state: bool):
 
         if state:
-            if not self.maxWindowSize:
+            if not self.window_max_size:
                 self.showMaximized()
-                self.maxWindowSize = [self.size().width(), self.size().height()]
+                self.window_max_size = [self.size().width(), self.size().height()]
                 self.showNormal()
-            self.resize(self.maxWindowSize[0], self.maxWindowSize[1])
+            self.resize(self.window_max_size[0], self.window_max_size[1])
             self.distance = [self.ui.background.pos().x()*2, self.ui.background.pos().y()*2]
-            self.resize(self.maxWindowSize[0] + self.distance[0], self.maxWindowSize[1] + self.distance[1])
+            self.resize(self.window_max_size[0] + self.distance[0], self.window_max_size[1] + self.distance[1])
             self.move(0 - (self.distance[0] / 2), 0 - (self.distance[1] / 2))
         else:
             self.resize((self.desktop_size[0] / 2.1) + 18,(self.desktop_size[1] / 2) + 18)
@@ -217,13 +213,13 @@ class Main_Win(WindowConfig):
 
     # 双击最大化与最小化
     def doubleCKMaxAndMin(self):
-        if round(time.time() - self.doubleClickTimeFlag, 2) < 0.35:
-            if self.ui.winMaxAMinRButton.isChecked():
-                self.ui.winMaxAMinRButton.setChecked(False)
+        if round(time.time() - self.doubleclick_timeflag, 2) < 0.35:
+            if self.ui.maxAmin_win_button.isChecked():
+                self.ui.maxAmin_win_button.setChecked(False)
             else:
-                self.ui.winMaxAMinRButton.setChecked(True)
+                self.ui.maxAmin_win_button.setChecked(True)
 
-        self.doubleClickTimeFlag = time.time()
+        self.doubleclick_timeflag = time.time()
 
     # 更改背景图片
     def changeBackground(self):
@@ -263,7 +259,7 @@ class Main_Win(WindowConfig):
 #   --------------------------------------------------控件事件-------------------------------------------------
 
     # 选择视频文件
-    def selectVideoFile(self):
+    def select_video_file(self):
         if self.init_config['选择文件路径']:
             file_path = os.path.dirname(self.init_config['选择文件路径'][0])
         else:
@@ -279,7 +275,7 @@ class Main_Win(WindowConfig):
             self.ui.outputInfo.setText('\n' + '\n\n'.join(os.path.basename(file_path) for file_path in file_video_paths).strip())
 
     # 选择输出文件夹
-    def selectOutputDir(self):
+    def select_output_dir(self):
         if self.init_config['输出文件路径']:
             file_path = self.init_config['输出文件路径']
         elif self.init_config['选择文件路径']:
@@ -294,59 +290,59 @@ class Main_Win(WindowConfig):
             self.init_config['输出文件路径'] = output_dir_path
             with open(r'config\init_config.json', 'w', encoding='utf-8') as f:
                 json.dump(self.init_config, f, ensure_ascii=False, indent=4)
-            self.ui.outPutDirInfo.setText(output_dir_path)
+            self.ui.output_dir_info.setText(output_dir_path)
 
     # 输出文件夹信息
-    def outPutDirInfo(self):
+    def output_dir_info(self):
         if self.init_config['输出文件路径']:
-            self.ui.outPutDirInfo.setText(self.init_config['输出文件路径'])
+            self.ui.output_dir_info.setText(self.init_config['输出文件路径'])
 
     # 转换大小
-    def targetSizeChange(self, text):
+    def change_target_size(self, text):
         if text:
-            self.ui.targetSize.setCurrentText(text)
+            self.ui.target_size.setCurrentText(text)
             size = text
         else:
-            self.ui.targetSize.setCurrentIndex(0)
-            size = self.ui.targetSize.currentText()
+            self.ui.target_size.setCurrentIndex(0)
+            size = self.ui.target_size.currentText()
 
         self.init_config['转换大小'] = size
         with open(r'config\init_config.json', 'w', encoding='utf-8') as f:
             json.dump(self.init_config, f, ensure_ascii=False, indent=4)
 
     # 算法选择
-    def algorithmChange(self, text):
+    def change_algorithm(self, text):
         if text:
-            self.ui.selectAlgorithm.setCurrentText(text)
+            self.ui.select_algorithm.setCurrentText(text)
             algorithm = text
         else:
-            self.ui.selectAlgorithm.setCurrentIndex(0)
-            algorithm = self.ui.selectAlgorithm.currentText()
+            self.ui.select_algorithm.setCurrentIndex(0)
+            algorithm = self.ui.select_algorithm.currentText()
 
         self.init_config['使用算法'] = algorithm
         with open(r'config\init_config.json', 'w', encoding='utf-8') as f:
             json.dump(self.init_config, f, ensure_ascii=False, indent=4)
 
     # 转换质量
-    def convertQualityChange(self, value):
+    def change_convert_quality(self, value):
         if value:
-            self.ui.convertQuality.setValue(value)
+            self.ui.convert_quality.setValue(value)
             quality = value
         else:
-            self.ui.convertQuality.setValue(0)
-            quality = self.ui.convertQuality.value()
+            self.ui.convert_quality.setValue(0)
+            quality = self.ui.convert_quality.value()
 
         self.init_config['转换质量'] = quality
         with open(r'config\init_config.json', 'w', encoding='utf-8') as f:
             json.dump(self.init_config, f, ensure_ascii=False, indent=4)
 
     # 是否锐化
-    def sharpenSwitchChange(self, state):
+    def change_sharpen_switch(self, state):
         if state:
-            self.ui.sharpenSwitch.setChecked(True)
+            self.ui.sharpen_switch.setChecked(True)
             sharpen = True
         else:
-            self.ui.sharpenSwitch.setChecked(False)
+            self.ui.sharpen_switch.setChecked(False)
             sharpen = False
 
         self.init_config['锐化'] = sharpen

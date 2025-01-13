@@ -208,7 +208,7 @@ QComboBox QAbstractItemView {
             <number>20</number>
            </property>
            <item>
-            <widget class="QPushButton" name="winMiniButton">
+            <widget class="QPushButton" name="min_win_button">
              <property name="sizePolicy">
               <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
                <horstretch>0</horstretch>
@@ -227,7 +227,7 @@ QComboBox QAbstractItemView {
             </widget>
            </item>
            <item>
-            <widget class="QRadioButton" name="winMaxAMinRButton">
+            <widget class="QRadioButton" name="maxAmin_win_button">
              <property name="sizePolicy">
               <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
                <horstretch>0</horstretch>
@@ -249,7 +249,7 @@ QComboBox QAbstractItemView {
             </widget>
            </item>
            <item>
-            <widget class="QPushButton" name="closeButton">
+            <widget class="QPushButton" name="close_button">
              <property name="sizePolicy">
               <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
                <horstretch>0</horstretch>
@@ -291,7 +291,7 @@ QComboBox QAbstractItemView {
            </property>
            <layout class="QVBoxLayout" name="verticalLayout_2">
             <item>
-             <widget class="QPushButton" name="selectVideoFile">
+             <widget class="QPushButton" name="select_video_file">
               <property name="sizePolicy">
                <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
                 <horstretch>0</horstretch>
@@ -347,7 +347,7 @@ QComboBox QAbstractItemView {
               </property>
               <layout class="QHBoxLayout" name="horizontalLayout_8">
                <item>
-                <widget class="QLabel" name="outputInfo">
+                <widget class="QLabel" name="output_info">
                  <property name="text">
                   <string/>
                  </property>
@@ -408,7 +408,7 @@ QComboBox QAbstractItemView {
                </widget>
               </item>
               <item>
-               <widget class="QComboBox" name="targetSize">
+               <widget class="QComboBox" name="target_size">
                 <property name="sizePolicy">
                  <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
                   <horstretch>3</horstretch>
@@ -491,7 +491,7 @@ QComboBox QAbstractItemView {
                </widget>
               </item>
               <item>
-               <widget class="QComboBox" name="selectAlgorithm">
+               <widget class="QComboBox" name="select_algorithm">
                 <property name="sizePolicy">
                  <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
                   <horstretch>3</horstretch>
@@ -579,7 +579,7 @@ QComboBox QAbstractItemView {
                </widget>
               </item>
               <item>
-               <widget class="QSpinBox" name="convertQuality">
+               <widget class="QSpinBox" name="convert_quality">
                 <property name="sizePolicy">
                  <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
                   <horstretch>3</horstretch>
@@ -607,7 +607,7 @@ QComboBox QAbstractItemView {
              </property>
              <layout class="QHBoxLayout" name="horizontalLayout_6">
               <item>
-               <widget class="QRadioButton" name="sharpenSwitch">
+               <widget class="QRadioButton" name="sharpen_switch">
                 <property name="sizePolicy">
                  <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
                   <horstretch>0</horstretch>
@@ -633,7 +633,7 @@ QComboBox QAbstractItemView {
          <item>
           <layout class="QHBoxLayout" name="horizontalLayout_2">
            <item>
-            <widget class="QPushButton" name="selectOutputDir">
+            <widget class="QPushButton" name="select_output_dir">
              <property name="sizePolicy">
               <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
                <horstretch>7</horstretch>
@@ -652,7 +652,7 @@ QComboBox QAbstractItemView {
             </widget>
            </item>
            <item>
-            <widget class="QLineEdit" name="outPutDirInfo">
+            <widget class="QLineEdit" name="output_dir_info">
              <property name="sizePolicy">
               <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
                <horstretch>41</horstretch>
@@ -671,7 +671,7 @@ QComboBox QAbstractItemView {
             </widget>
            </item>
            <item>
-            <widget class="QPushButton" name="startConvert">
+            <widget class="QPushButton" name="start_convert">
              <property name="sizePolicy">
               <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
                <horstretch>8</horstretch>

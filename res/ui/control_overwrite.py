@@ -6,7 +6,7 @@ from PySide6.QtCore import Qt
 
 # Main_Win_ui 需要导入的模块
 # from ..qrc import mainrc_rc
-# from ..ui.controloverride import QMyComboBox
+# from ..ui.control_overwrite import QMyComboBox
 
 
 # 重写QComboBox控件的绘制方法，使其居中显示
