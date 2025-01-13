@@ -10,7 +10,7 @@ from PySide6.QtWidgets import QFileDialog
 from PySide6.QtGui import QEnterEvent
 from PySide6.QtCore import Qt, QTimer, QStandardPaths
 
-from windowConfig import WindowConfig
+from window_config import WindowConfig
 from res.ui import main_win_ui
 
 
