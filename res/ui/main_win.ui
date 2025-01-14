@@ -74,6 +74,28 @@ QLabel:hover
 	color: white;
 }
 
+
+/************************************ QRadioButton  ************************************/
+
+QPlainTextEdit
+{
+	color: white;
+	border: 0px solid;
+}
+
+QPlainTextEdit:hover
+{
+	color: white;
+	border: 0px solid;
+}
+
+QPlainTextEdit:pressed
+{
+	color: white;
+	border: 0px solid;
+}
+
+
 /************************************ QRadioButton  ************************************/
 
 /* 原始样式 */
@@ -346,13 +368,19 @@ QComboBox QAbstractItemView {
                <string>输出信息</string>
               </property>
               <layout class="QHBoxLayout" name="horizontalLayout_8">
+               <property name="topMargin">
+                <number>20</number>
+               </property>
                <item>
-                <widget class="QLabel" name="output_info">
-                 <property name="text">
-                  <string/>
+                <widget class="QPlainTextEdit" name="output_info">
+                 <property name="sizePolicy">
+                  <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+                   <horstretch>0</horstretch>
+                   <verstretch>0</verstretch>
+                  </sizepolicy>
                  </property>
-                 <property name="alignment">
-                  <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
+                 <property name="plainText">
+                  <string/>
                  </property>
                 </widget>
                </item>

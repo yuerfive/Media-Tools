@@ -5,7 +5,7 @@ import shutil
 import win32api
 
 from PySide6.QtCore import QObject, Signal
-from multiprocessing import Pool, cpu_count, Pipe
+from multiprocessing import Process, Queue
 from threading import Thread
 
 import video_tools
@@ -91,13 +91,9 @@ class Slot(QObject):
         else:
             os.makedirs(value['输出文件路径'])
 
+        queue = Queue()  # 主进程管道
         task_list = []  # 任务列表
-        pipe_list = []  # 管道列表
         for input_video in value['选择文件路径']:
-
-            main_pige, child_pige = Pipe()
-            pipe_list.append(main_pige)  # 记录主进程的管道
-
             file_name = os.path.basename(input_video)
             output_video = os.path.join(value['输出文件路径'], f"{file_name.split('.')[0]}_resized.mp4")
             target_width, target_height = value['转换大小'].split(' * ')
@@ -110,29 +106,46 @@ class Slot(QObject):
                 value['锐化'],
                 value['转换质量'],
                 value['编码预设'],
-                child_pige
+                queue
             ))
 
-        # 多进程处理
-        with Pool(cpu_count()) as pool:
-            pool.map_async(video_tools.process_task, task_list)
+        # 由于cpu的超线程的原因，导致实际核心数量仅为其一半，因此进程数也只能设置为一半
+        # 不然会导致超出实际核心数的进程直接跳出，导致任务无法完成
+        max_workers = max(os.cpu_count() // 2 - 1, 1)
 
-            # 主进程接收消息
-            completed = 0
-            while completed < len(pipe_list):
-                for pipe in pipe_list:
-                    if pipe.poll():
-                        message = pipe.recv()
-                        self.mysignal.send_info({'action': '输出信息', 'info': message})
-                        if "已完成" in message:
-                            completed += 1
-            self.isalldone_flag = True
+        # 任务索引
+        current_index = 0
+
+        # 已完成任务计数
+        completed_tasks = 0
+
+        # 多进程处理
+        for _ in range(min(max_workers, len(task_list))):
+            task = task_list[current_index]
+            Process(target=video_tools.process_task, args=(task,)).start()
+            current_index += 1
+
+        # 监听子进程消息, 并提交新任务
+        while completed_tasks < len(task_list):
+            message = queue.get()
+            if message:
+                print(message)
+                self.mysignal.send_info({'action': '输出信息', 'info': message})
+
+                if "已完成" in message:
+                    completed_tasks += 1    # 更新已完成任务计数
+
+                    # 提交新任务（如果有未提交任务）
+                    if current_index < len(task_list):
+                        task = task_list[current_index]
+                        Process(target=video_tools.process_task, args=(task,)).start()
+                        current_index += 1
+
+        # 所有任务完成
+        self.isalldone_flag = True
 
     # 输出信息
     def show_output_Info(self, value):
-
-        def show_info():
-            self.main_win.ui.output_info.setText('\n' + '\n\n'.join(info for _, info in self.output_info_dict.items()).strip())
 
         value = value['info']
 
@@ -144,10 +157,10 @@ class Slot(QObject):
             value = self.output_info_dict[filename]
             value = value.replace('进行中', '已完成')
             self.output_info_dict[filename] = value
-            Thread(target=show_info).start()
+            self.main_win.ui.output_info.setPlainText('\n\n'.join(info for _, info in self.output_info_dict.items()).strip())
             if self.isalldone_flag:
                 self.output_info_dict = {}
                 self.isalldone_flag = False
         else:
             self.output_info_dict[filename] = value
-            Thread(target=show_info).start()
+            self.main_win.ui.output_info.setPlainText('\n\n'.join(info for _, info in self.output_info_dict.items()).strip())

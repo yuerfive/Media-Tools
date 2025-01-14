@@ -58,6 +58,28 @@ QLabel:hover
 	color: white;
 }
 
+
+/************************************ QRadioButton  ************************************/
+
+QPlainTextEdit
+{
+	color: white;
+	border: 0px solid;
+}
+
+QPlainTextEdit:hover
+{
+	color: white;
+	border: 0px solid;
+}
+
+QPlainTextEdit:pressed
+{
+	color: white;
+	border: 0px solid;
+}
+
+
 /************************************ QRadioButton  ************************************/
 
 /* 原始样式 */

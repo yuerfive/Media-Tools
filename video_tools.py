@@ -6,7 +6,7 @@ import threading
 
 
 class VideoTools:
-    def __init__(self, input_folder, output_folder, target_width, target_height, algorithm, sharpen, crf, preset, child_pige):
+    def __init__(self, input_folder, output_folder, target_width, target_height, algorithm, sharpen, crf, preset, queue):
         self.input_folder = input_folder
         self.output_folder = output_folder
         self.target_width = target_width
@@ -16,9 +16,8 @@ class VideoTools:
         self.crf = crf
         self.preset = preset
 
-        self.info = ''
         self.filename = os.path.basename(self.input_folder)
-        self.child_pige = child_pige
+        self.queue = queue
 
         # 映射字段到含义
         self.field_map = {
@@ -110,7 +109,6 @@ class VideoTools:
             # 指定编码为 utf-8
             process = subprocess.Popen(
                 command,
-                stdout=subprocess.PIPE,
                 stderr=subprocess.PIPE,
                 text=True,
                 encoding='utf-8',
@@ -125,7 +123,7 @@ class VideoTools:
             stderr_thread.join()
 
             # 发送完成信号
-            self.child_pige.send(f'{self.filename}  已完成')
+            self.queue.put(f'{self.filename}  已完成')
 
             return
         except subprocess.CalledProcessError as e:
@@ -142,36 +140,38 @@ class VideoTools:
                     for item in filter(None, map(str.strip, originalInfo.split())):
                         originalInfo_sp.extend(filter(None, map(str.strip, item.split('=', 1))) if '=' in item else [item])
 
-                    self.info = ''
+                    info = ''
                     for i in originalInfo_sp:
                         if i in self.field_map:
-                            self.info += f"  {self.field_map[i]}"
+                            info += f"  {self.field_map[i]}"
                         elif 'KiB' in i:
-                            self.info += f"{int(i.split('KiB')[0]) / 1024}MB"
+                            info += f"{int(i.split('KiB')[0]) / 1024}MB"
                         elif 'kbits/s' in i:
-                            self.info += f"{float(i.split('kbits/s')[0])}kbps"
+                            info += f"{float(i.split('kbits/s')[0])}kbps"
                         else:
-                            self.info += i
-                    self.info += '  进行中'
-                    self.child_pige.send(self.info)
-
+                            info += i
+                    info += '  进行中'
+                    # print(info)
+                    self.queue.put(info)
         except Exception:
             pass
-        finally:
-            stream.close()
 
 # 多进程处理
 def process_task(args):
-    input_folder, output_folder, target_width, target_height, algorithm, sharpen, crf, preset, child_pige = args
-    convideo = VideoTools(
-        input_folder = input_folder,
-        output_folder = output_folder,
-        target_width = target_width,
-        target_height = target_height,
-        algorithm = algorithm,
-        sharpen = sharpen,
-        crf = crf,
-        preset = preset,
-        child_pige = child_pige
-    )
-    convideo.run_command()
+    try:
+        input_folder, output_folder, target_width, target_height, algorithm, sharpen, crf, preset, queue = args
+
+        convideo = VideoTools(
+            input_folder = input_folder,
+            output_folder = output_folder,
+            target_width = target_width,
+            target_height = target_height,
+            algorithm = algorithm,
+            sharpen = sharpen,
+            crf = crf,
+            preset = preset,
+            queue = queue
+        )
+        convideo.run_command()
+    except Exception:
+        pass

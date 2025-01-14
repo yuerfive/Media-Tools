@@ -41,9 +41,6 @@ class MainWin(WindowConfig):
         with open(r'config\style\main_win_white.qss', 'r', encoding='utf-8') as f:
             self.white_qss = f.read()
 
-        # 输出信息label自动换行
-        self.ui.output_info.setWordWrap(True)
-
         # 双击最大最小化鼠标点击时间标志
         self.doubleclick_timeflag = 0
         # 窗口最大尺寸
@@ -272,7 +269,7 @@ class MainWin(WindowConfig):
             self.init_config['选择文件路径'] = file_video_paths
             with open(r'config\init_config.json', 'w', encoding='utf-8') as f:
                 json.dump(self.init_config, f, ensure_ascii=False, indent=4)
-            self.ui.outputInfo.setText('\n' + '\n\n'.join(os.path.basename(file_path) for file_path in file_video_paths).strip())
+            self.ui.output_info.setPlainText('\n\n'.join(os.path.basename(file_path) for file_path in file_video_paths).strip())
 
     # 选择输出文件夹
     def select_output_dir(self):

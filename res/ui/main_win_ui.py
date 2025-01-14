@@ -16,9 +16,9 @@ from PySide6.QtGui import (QBrush, QColor, QConicalGradient, QCursor,
     QImage, QKeySequence, QLinearGradient, QPainter,
     QPalette, QPixmap, QRadialGradient, QTransform)
 from PySide6.QtWidgets import (QApplication, QComboBox, QFrame, QGroupBox,
-    QHBoxLayout, QLabel, QLineEdit, QPushButton,
-    QRadioButton, QSizePolicy, QSpacerItem, QSpinBox,
-    QVBoxLayout, QWidget)
+    QHBoxLayout, QLabel, QLineEdit, QPlainTextEdit,
+    QPushButton, QRadioButton, QSizePolicy, QSpacerItem,
+    QSpinBox, QVBoxLayout, QWidget)
 
 from ..qrc import mainrc_rc
 from ..ui.control_overwrite import QMyComboBox
@@ -89,8 +89,30 @@ class Ui_Form(object):
 "	color: white;\n"
 "}\n"
 "\n"
-"/************"
-                        "************************ QRadioButton  ************************************/\n"
+"\n"
+"/*******"
+                        "***************************** QRadioButton  ************************************/\n"
+"\n"
+"QPlainTextEdit\n"
+"{\n"
+"	color: white;\n"
+"	border: 0px solid;\n"
+"}\n"
+"\n"
+"QPlainTextEdit:hover\n"
+"{\n"
+"	color: white;\n"
+"	border: 0px solid;\n"
+"}\n"
+"\n"
+"QPlainTextEdit:pressed\n"
+"{\n"
+"	color: white;\n"
+"	border: 0px solid;\n"
+"}\n"
+"\n"
+"\n"
+"/************************************ QRadioButton  ************************************/\n"
 "\n"
 "/* \u539f\u59cb\u6837\u5f0f */\n"
 "QRadioButton#winMaxAMinRButton::indicator:checked\n"
@@ -114,7 +136,8 @@ class Ui_Form(object):
 "	width: 15px;\n"
 "	height: 15px;\n"
 "}\n"
-"QRadioButton#winMaxAMinRButton::indicator:unchecked:hover\n"
+"QRadioButton#winMaxAMinRButton:"
+                        ":indicator:unchecked:hover\n"
 "{\n"
 "	border-image: url(:/winMin/img/mins.png);\n"
 "	width: 15px;\n"
@@ -129,8 +152,7 @@ class Ui_Form(object):
 "}\n"
 "\n"
 "\n"
-"/************************************ QMyComboBox  *****************************"
-                        "*******/\n"
+"/************************************ QMyComboBox  ************************************/\n"
 "\n"
 "/* \u539f\u59cb\u6837\u5f0f */\n"
 "QMyComboBox\n"
@@ -265,9 +287,11 @@ class Ui_Form(object):
         self.groupBox.setObjectName(u"groupBox")
         self.horizontalLayout_8 = QHBoxLayout(self.groupBox)
         self.horizontalLayout_8.setObjectName(u"horizontalLayout_8")
-        self.output_info = QLabel(self.groupBox)
+        self.horizontalLayout_8.setContentsMargins(-1, 20, -1, -1)
+        self.output_info = QPlainTextEdit(self.groupBox)
         self.output_info.setObjectName(u"output_info")
-        self.output_info.setAlignment(Qt.AlignLeading|Qt.AlignLeft|Qt.AlignTop)
+        sizePolicy.setHeightForWidth(self.output_info.sizePolicy().hasHeightForWidth())
+        self.output_info.setSizePolicy(sizePolicy)
 
         self.horizontalLayout_8.addWidget(self.output_info)
 
@@ -475,7 +499,7 @@ class Ui_Form(object):
         self.close_button.setText(QCoreApplication.translate("Form", u"\u00d7", None))
         self.select_video_file.setText(QCoreApplication.translate("Form", u"\u9009\u62e9\u89c6\u9891\u6587\u4ef6", None))
         self.groupBox.setTitle(QCoreApplication.translate("Form", u"\u8f93\u51fa\u4fe1\u606f", None))
-        self.output_info.setText("")
+        self.output_info.setPlainText("")
         self.label.setText(QCoreApplication.translate("Form", u"\u8f6c\u6362\u5927\u5c0f", None))
         self.target_size.setItemText(0, QCoreApplication.translate("Form", u"1280 * 720", None))
         self.target_size.setItemText(1, QCoreApplication.translate("Form", u"1920 * 1080", None))

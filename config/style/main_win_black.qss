@@ -58,6 +58,29 @@ QLabel:hover
 	color: black;
 }
 
+
+/************************************ QRadioButton  ************************************/
+
+QPlainTextEdit
+{
+	color: black;
+	border: 0px solid;
+}
+
+QPlainTextEdit:hover
+{
+	color: black;
+	border: 0px solid;
+}
+
+QPlainTextEdit:pressed
+{
+	color: black;
+	border: 0px solid;
+}
+
+
+
 /************************************ QRadioButton  ************************************/
 
 
